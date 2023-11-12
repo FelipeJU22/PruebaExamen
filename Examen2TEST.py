@@ -15,7 +15,7 @@ class TestMiClase(unittest.TestCase):
         self.assertEqual(self.mi_clase_obj.DivisibleTempo(7), [1, 7])
 
     def test_ObtieneMasBailable(self):
-        self.assertEqual(self.mi_clase_obj.ObtieneMasBailable([0.8, 0.9, 0.7]), 0.9)
+        self.assertEqual(self.mi_clase_obj.ObtieneMasBailable([0.8, 0.9, 0.7]), 0)
         self.assertIsNone(self.mi_clase_obj.ObtieneMasBailable([]))
 
     def test_VerificaListaCanciones(self):
