@@ -1,0 +1,27 @@
+# This is a basic workflow to help you get started with Actions
+
+name: workflow
+
+# Controls when the workflow will run
+on: pull_request
+jobs:
+  test_and_approve:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11
+
+    - name: Run tests
+      run: |
+        python Examen2TEST.py
+
+    - name: Approve PR if tests pass
+      if: success()
+      run: |
+        gh pr review ${{ github.event.pull_request.number }} --approve
