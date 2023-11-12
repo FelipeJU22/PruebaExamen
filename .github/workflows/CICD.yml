@@ -5,20 +5,23 @@ name: CI
 # Controls when the workflow will run
 on: pull_request
 jobs:
-  test:
+  test_and_approve:
     runs-on: windows-latest
-  
-    steps:
-    - name: Run unit tests
-      run: python -m unittest discover -v -p "Examen2TEST.py"
-  
-    - name: Check test results and approve/reject PR
-      run: |
-        if [ $? -eq 0 ]; then
-          gh pr review ${{ github.event.number }} --approve
-        else
-          gh pr review ${{ github.event.number }} --reject
-        fi
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11
+
+    - name: Run tests
+      run: |
+        python Examen2TEST.py
+
+    - name: Approve PR if tests pass
+      if: success()
+      run: |
+        gh pr review ${{ github.event.pull_request.number }} --approve
